@@ -17,6 +17,7 @@
 bin
 obj
 *.db
+appsettings.json
 
 # Build results
 [Dd]ebug/
