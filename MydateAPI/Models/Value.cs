@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MydateAPI.Model
+namespace MydateAPI.Models
 {
     public class Value
     {

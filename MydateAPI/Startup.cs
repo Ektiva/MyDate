@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -20,6 +21,7 @@ using Microsoft.IdentityModel.Tokens;
 using MydateAPI.Data;
 using MydateAPI.Helpers;
 using MydateAPI.Repositories;
+using MydateAPI.Repositories.Interfaces;
 using MydateAPI.Repositories.Repo;
 
 namespace MydateAPI
@@ -38,10 +40,21 @@ namespace MydateAPI
         {
             services.AddDbContext<DataContext>(x => x.UseSqlite
             (Configuration.GetConnectionString("DefaultConnection")));
-            services.AddControllers();
+
+            services.AddControllers().AddNewtonsoftJson(opt =>
+                {
+                    opt.SerializerSettings.ReferenceLoopHandling =
+                        Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddCors();
+
+            services.AddAutoMapper(typeof(MyDateRepository).Assembly);
+
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IMyDateRepository, MyDateRepository>();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters

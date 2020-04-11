@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MydateAPI.Controllers.DTOs;
 using MydateAPI.DTOs;
-using MydateAPI.Model;
+using MydateAPI.Models;
 using MydateAPI.Repositories;
 
 namespace MydateAPI.Controllers

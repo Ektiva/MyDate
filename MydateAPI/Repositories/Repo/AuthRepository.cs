@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MydateAPI.Data;
-using MydateAPI.Model;
+using MydateAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

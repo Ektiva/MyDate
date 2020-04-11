@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MydateAPI.Data;
-using MydateAPI.Model;
+using MydateAPI.Models;
 
 namespace MydateAPI.Controllers
 {
