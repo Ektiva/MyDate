@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MydateAPI.DTOs;
 using MydateAPI.Repositories.Interfaces;
+using static MydateAPI.DTOs.UserForUpdateDTO;
 
 namespace MydateAPI.Controllers
 {
@@ -92,21 +94,21 @@ namespace MydateAPI.Controllers
 
 
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateUser(int id, UserForUpdateDto userForUpdateDto)
-        //{
-        //    if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-        //        return Unauthorized();
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, UserForUpdateDto userForUpdateDto)
+        {
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
 
-        //    var userFromRepo = await _repo.GetUser(id);
+            var userFromRepo = await _repo.GetUser(id);
 
-        //    _mapper.Map(userForUpdateDto, userFromRepo);
+            _mapper.Map(userForUpdateDto, userFromRepo);
 
-        //    if (await _repo.SaveAll())
-        //        return NoContent();
+            if (await _repo.SaveAll())
+                return NoContent();
 
-        //    throw new Exception($"Updating user {id} failed on save");
-        //}
+            throw new Exception($"Updating user {id} failed on save");
+        }
 
         //[HttpPost("{id}/like/{recipientId}")]
         //public async Task<IActionResult> LikeUser(int id, int recipientId)

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static MydateAPI.DTOs.UserForUpdateDTO;
 
 namespace MydateAPI.Helpers
 {
@@ -37,7 +38,7 @@ namespace MydateAPI.Helpers
             //CreateMap<Photo, PhotosForDetailedDto>();
             //CreateMap<Photo, PhotoForReturnDto>();
             //CreateMap<PhotoForCreationDto, Photo>();
-            //CreateMap<UserForUpdateDto, User>();
+            CreateMap<UserForUpdateDto, User>();
             //CreateMap<UserForRegisterDto, User>();
             //CreateMap<MessageForCreationDto, Message>().ReverseMap();
             //CreateMap<Message, MessageToReturnDto>()
