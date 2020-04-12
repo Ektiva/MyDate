@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -15,6 +16,7 @@ using MydateAPI.Repositories;
 
 namespace MydateAPI.Controllers
 {
+    //[EnableCors("DefaultPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
