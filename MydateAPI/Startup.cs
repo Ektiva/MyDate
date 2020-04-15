@@ -50,30 +50,7 @@ namespace MydateAPI
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddCors();
 
-            // CORS Policy definition.
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("DefaultPolicy",
-            //        builder =>
-            //        builder.WithOrigins("http://localhost:4200",
-            //                            "https://localhost:4200",
-            //                            "http://localhost:5000",
-            //                            "https://localhost:5000",
-            //                            "35.167.74.121",
-            //                            "35.166.202.113",
-            //                            "35.160.3.103",
-            //                            "54.183.64.135",
-            //                            "54.67.77.38",
-            //                            "54.67.15.170",
-            //                            "54.183.204.205",
-            //                            "35.171.156.124",
-            //                            "18.233.90.226",
-            //                            "3.211.189.167")
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader()
-            //        .AllowCredentials());
-            //}
-            //);
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
 
             services.AddAutoMapper(typeof(MyDateRepository).Assembly);
 
@@ -120,6 +97,8 @@ namespace MydateAPI
 
             app.UseCors(X => X.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
+
+            //AllowCredentials allow browser to send cookies. But our authentication isn't using cookies!
             //app.UseCors(x => x.WithOrigins("http://localhost:4200")
             //    .AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 

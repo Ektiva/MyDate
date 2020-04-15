@@ -36,8 +36,8 @@ namespace MydateAPI.Helpers
                     opt.MapFrom(d => d.DateOfBirth.CalculateAge());
                 });
             //CreateMap<Photo, PhotosForDetailedDto>();
-            //CreateMap<Photo, PhotoForReturnDto>();
-            //CreateMap<PhotoForCreationDto, Photo>();
+            CreateMap<Photo, PhotoForReturnDto>();
+            CreateMap<PhotoForCreationDto, Photo>();
             CreateMap<UserForUpdateDto, User>();
             //CreateMap<UserForRegisterDto, User>();
             //CreateMap<MessageForCreationDto, Message>().ReverseMap();

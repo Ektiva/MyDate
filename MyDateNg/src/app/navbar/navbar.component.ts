@@ -9,15 +9,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  model: any = {};
+  model: any = {}; 
+  photoUrl: string;
 
-  constructor(public authService: AuthService, private alertify: AlertifyService,
-     private router: Router) { }
+  constructor(
+    public authService: AuthService, 
+    private alertify: AlertifyService,
+    private router: Router) { }
 
   ngOnInit() {
+    this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
   }
 
-  login(){
+  login() {
     this.authService.login(this.model).subscribe(next => {
       this.alertify.success('logged in successfully');
     }, error => {
@@ -32,12 +36,15 @@ export class NavbarComponent implements OnInit {
     /*const token = localStorage.getItem('token');
     //Return true if the token is not empty
     return !!token;*/
-    //use jwt 3rd party instead
+    // use jwt 3rd party instead
     return this.authService.loggedIn();
   }
 
   logOut() {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.authService.decodedToken = null;
+    this.authService.currentUser = null;
     this.alertify.message('logged out');
     this.router.navigate(['/home']);
   }
