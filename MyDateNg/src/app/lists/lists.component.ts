@@ -24,14 +24,14 @@ export class ListsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    /*this.route.data.subscribe(data => {
+    this.route.data.subscribe(data => {
       this.users = data['users'].result;
       this.pagination = data['users'].pagination;
     });
-    this.likesParam = 'Likers';*/
+    this.likesParam = 'Likers';
   }
 
-  /*loadUsers() {
+  loadUsers() {
     this.userService
       .getUsers(
         this.pagination.currentPage,
@@ -53,6 +53,6 @@ export class ListsComponent implements OnInit {
   pageChanged(event: any): void {
     this.pagination.currentPage = event.page;
     this.loadUsers();
-  }*/
+  }
 
 }
