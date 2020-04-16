@@ -12,6 +12,7 @@ import { setTheme } from 'ngx-bootstrap/utils';
 import { RouterModule } from '@angular/router';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { FileUploadModule } from 'ng2-file-upload';
+import {TimeAgoPipe} from 'time-ago-pipe';
 
 import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
@@ -65,7 +66,8 @@ export class CustomHammerConfig extends HammerGestureConfig  {
       MemberDetailComponent,
       MemberEditComponent,
       PhotoEditorComponent,
-      CompleteRegistrationComponent
+      CompleteRegistrationComponent,
+      TimeAgoPipe
    ],
    imports: [
       BrowserModule,

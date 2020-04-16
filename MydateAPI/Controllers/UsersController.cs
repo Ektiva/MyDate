@@ -8,11 +8,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MydateAPI.DTOs;
+using MydateAPI.Helpers;
 using MydateAPI.Repositories.Interfaces;
 
 namespace MydateAPI.Controllers
 {
-    //[ServiceFilter(typeof(LogUserActivity))]
+    [ServiceFilter(typeof(LogUserActivity))]
     //To make sure that any user who request this controller have authorization
     [Authorize]
     [Route("api/[controller]")]
