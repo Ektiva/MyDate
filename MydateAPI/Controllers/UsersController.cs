@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MydateAPI.DTOs;
 using MydateAPI.Repositories.Interfaces;
-using static MydateAPI.DTOs.UserForUpdateDTO;
 
 namespace MydateAPI.Controllers
 {
@@ -48,7 +47,7 @@ namespace MydateAPI.Controllers
         //}
 
         //Get User and Users with Automapper
-        [HttpGet("{id}"/*, Name = "GetUser"*/)]
+        [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await _repo.GetUser(id);

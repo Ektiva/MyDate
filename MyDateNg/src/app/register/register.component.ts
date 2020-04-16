@@ -12,6 +12,8 @@ import {
 // import { BsDatepickerConfig } from 'ngx-bootstrap';
 import { User } from '../_models/user';
 import { Router } from '@angular/router';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-register',
@@ -20,26 +22,33 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter();
-  model: any = {};
-  /*user: User;
+  // model: any = {};
+  user: User;
   registerForm: FormGroup;
-  bsConfig: Partial<BsDatepickerConfig>;*/
+  bsConfig: Partial<BsDatepickerConfig>;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private alertify: AlertifyService,
-    // private fb: FormBuilder
+    private fb: FormBuilder
     ) { }
 
   ngOnInit() {
-    /*this.bsConfig = {
+    /*this.registerForm = new FormGroup({
+      username: new FormControl('', Validators.required),
+      password: new FormControl('',
+        [Validators.required, Validators.minLength(4), Validators.maxLength(8)]),
+      confirmPassword: new FormControl('', Validators.required)
+    }, this.passwordMatchValidator);*/
+
+    this.bsConfig = {
       containerClass: 'theme-red'
     };
-    this.createRegisterForm();*/
+    this.createRegisterForm();
   }
 
-  /*createRegisterForm() {
+  createRegisterForm() {
     this.registerForm = this.fb.group(
       {
         gender: ['male'],
@@ -64,8 +73,7 @@ export class RegisterComponent implements OnInit {
 
   passwordMatchValidator(g: FormGroup) {
     return g.get('password').value === g.get('confirmPassword').value
-      ? null
-      : { mismatch: true };
+      ? null : { mismatch: true };
   }
 
   register() {
@@ -85,15 +93,16 @@ export class RegisterComponent implements OnInit {
         }
       );
     }
-  }*/
+  }
 
-  register() {
-    this.authService.register(this.model).subscribe(() => {
+  /*register() {
+    /*this.authService.register(this.model).subscribe(() => {
       this.alertify.success('registration successful');
     }, error => {
       this.alertify.error(error);
     });
-  }
+    console.log(this.registerForm.value);
+  }*/
 
   cancel() {
     this.cancelRegister.emit(false);

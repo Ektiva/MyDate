@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MydateAPI.Controllers.DTOs
+namespace MydateAPI.DTOs
 {
-    public class UserForLoginDTO
+    public class UserForLoginDto
     {
         public string Username { get; set; }
 

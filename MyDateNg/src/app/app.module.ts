@@ -4,7 +4,8 @@ import {
    HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { setTheme } from 'ngx-bootstrap/utils';
@@ -36,6 +37,7 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
+import { CompleteRegistrationComponent } from './complete-registration/complete-registration.component';
 
 
 export function tokenGetter() {
@@ -62,25 +64,29 @@ export class CustomHammerConfig extends HammerGestureConfig  {
       MemberCardComponent,
       MemberDetailComponent,
       MemberEditComponent,
-      PhotoEditorComponent
+      PhotoEditorComponent,
+      CompleteRegistrationComponent
    ],
    imports: [
       BrowserModule,
+      BrowserAnimationsModule,
       HttpClientModule,
       FormsModule,
+      ReactiveFormsModule,
       BsDropdownModule.forRoot(),
       TabsModule.forRoot(),
       RouterModule.forRoot(appRoutes),
       NgxGalleryModule,
       FileUploadModule,
       BrowserAnimationsModule,
+      BsDatepickerModule.forRoot(),
       JwtModule.forRoot({
-         config:{
-            tokenGetter: tokenGetter,
-            whitelistedDomains: ['localhost:44382'],
-            blacklistedRoutes: ['localhost:44382/api/auth']
+         config: {
+           tokenGetter,
+           whitelistedDomains: ['localhost:44382'],
+           blacklistedRoutes: ['localhost:44382/api/auth']
          }
-      })
+       })
    ],
    providers: [
       AuthService,

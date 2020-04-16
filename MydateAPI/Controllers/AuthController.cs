@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using MydateAPI.Controllers.DTOs;
+using MydateAPI.Controllers;
 using MydateAPI.DTOs;
 using MydateAPI.Models;
 using MydateAPI.Repositories;
@@ -34,28 +34,33 @@ namespace MydateAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserForRegisterDTO userForRegisterDTO)
+        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
             //Validate the request
 
             //Convert username to lower case to avoid duplicate username
-            userForRegisterDTO.Username = userForRegisterDTO.Username.ToLower();
+            userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
 
-            if (await _repo.UserExists(userForRegisterDTO.Username))
+            if (await _repo.UserExists(userForRegisterDto.Username))
                 return BadRequest("Username already exist");
 
-            var userToCreate = new User
-            {
-                Username = userForRegisterDTO.Username
-            };
+            //var userToCreate = new User
+            //{
+            //    Username = userForRegisterDto.Username
+            //};
 
-            var createdUser = await _repo.Register(userToCreate, userForRegisterDTO.Password);
+            var userToCreate = _mapper.Map<User>(userForRegisterDto);
 
-            return StatusCode(201);
+            var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
+
+            var userToReturn = _mapper.Map<UserForDetailedDto>(createdUser);
+
+            //return StatusCode(201);
+            return CreatedAtRoute("GetUser", new { controller = "Users", id = createdUser.Id }, userToReturn);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UserForLoginDTO userForLoginDTO)
+        public async Task<IActionResult> Login(UserForLoginDto userForLoginDTO)
         {
             //throw new Exception("Computer says No!");
 
