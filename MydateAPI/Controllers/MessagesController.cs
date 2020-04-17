@@ -27,56 +27,57 @@ namespace MydateAPI.Controllers
             _repo = repo;
         }
 
-        //[HttpGet("{id}", Name = "GetMessage")]
-        //public async Task<IActionResult> GetMessage(int userId, int id)
-        //{
-        //    if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-        //        return Unauthorized();
+        [HttpGet("{id}", Name = "GetMessage")]
+        public async Task<IActionResult> GetMessage(int userId, int id)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
 
-        //    var messageFromRepo = await _repo.GetMessage(id);
+            var messageFromRepo = await _repo.GetMessage(id);
 
-        //    if (messageFromRepo == null)
-        //        return NotFound();
+            if (messageFromRepo == null)
+                return NotFound();
 
-        //    return Ok(messageFromRepo);
-        //}
+            return Ok(messageFromRepo);
+        }
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetMessagesForUser(int userId,
-        //   [FromQuery]MessageParams messageParams)
-        //{
-        //    if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-        //        return Unauthorized();
+        [HttpGet]
+        public async Task<IActionResult> GetMessagesForUser(int userId,
+           [FromQuery]MessageParams messageParams)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
 
-        //    messageParams.UserId = userId;
+            messageParams.UserId = userId;
 
-        //    var messagesFromRepo = await _repo.GetMessagesForUser(messageParams);
+            var messagesFromRepo = await _repo.GetMessagesForUser(messageParams);
 
-        //    var messages = _mapper.Map<IEnumerable<MessageToReturnDto>>(messagesFromRepo);
+            var messages = _mapper.Map<IEnumerable<MessageToReturnDto>>(messagesFromRepo);
 
-        //    Response.AddPagination(messagesFromRepo.CurrentPage, messagesFromRepo.PageSize,
-        //       messagesFromRepo.TotalCount, messagesFromRepo.TotalPages);
+            Response.AddPagination(messagesFromRepo.CurrentPage, messagesFromRepo.PageSize,
+               messagesFromRepo.TotalCount, messagesFromRepo.TotalPages);
 
-        //    return Ok(messages);
-        //}
+            return Ok(messages);
+        }
 
-        //[HttpGet("thread/{recipientId}")]
-        //public async Task<IActionResult> GetMessageThread(int userId, int recipientId)
-        //{
-        //    if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-        //        return Unauthorized();
+        //Conversation between 2 users
+        [HttpGet("thread/{recipientId}")]
+        public async Task<IActionResult> GetMessageThread(int userId, int recipientId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
 
-        //    var messagesFromRepo = await _repo.GetMessageThread(userId, recipientId);
+            var messagesFromRepo = await _repo.GetMessageThread(userId, recipientId);
 
-        //    var messageThread = _mapper.Map<IEnumerable<MessageToReturnDto>>(messagesFromRepo);
+            var messageThread = _mapper.Map<IEnumerable<MessageToReturnDto>>(messagesFromRepo);
 
-        //    return Ok(messageThread);
-        //}
+            return Ok(messageThread);
+        }
 
         [HttpPost]
         public async Task<IActionResult> CreateMessage(int userId, MessageForCreationDto messageForCreationDto)
         {
-            var sender = await _repo.GetUser(userId);
+           var sender = await _repo.GetUser(userId);
 
             if (sender.Id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
@@ -102,46 +103,46 @@ namespace MydateAPI.Controllers
             throw new Exception("Creating the message failed on save");
         }
 
-        //[HttpPost("{id}")]
-        //public async Task<IActionResult> DeleteMessage(int id, int userId)
-        //{
-        //    if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-        //        return Unauthorized();
+        [HttpPost("{id}")]
+        public async Task<IActionResult> DeleteMessage(int id, int userId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
 
-        //    var messageFromRepo = await _repo.GetMessage(id);
+            var messageFromRepo = await _repo.GetMessage(id);
 
-        //    if (messageFromRepo.SenderId == userId)
-        //        messageFromRepo.SenderDeleted = true;
+            if (messageFromRepo.SenderId == userId)
+                messageFromRepo.SenderDeleted = true;
 
-        //    if (messageFromRepo.RecipientId == userId)
-        //        messageFromRepo.RecipientDeleted = true;
+            if (messageFromRepo.RecipientId == userId)
+                messageFromRepo.RecipientDeleted = true;
 
-        //    if (messageFromRepo.SenderDeleted && messageFromRepo.RecipientDeleted)
-        //        _repo.Delete(messageFromRepo);
+            if (messageFromRepo.SenderDeleted && messageFromRepo.RecipientDeleted)
+                _repo.Delete(messageFromRepo);
 
-        //    if (await _repo.SaveAll())
-        //        return NoContent();
+            if (await _repo.SaveAll())
+                return NoContent();
 
-        //    throw new Exception("Error deleting the message");
-        //}
+            throw new Exception("Error deleting the message");
+        }
 
-        //[HttpPost("{id}/read")]
-        //public async Task<IActionResult> MarkMessageAsRead(int userId, int id)
-        //{
-        //    if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-        //        return Unauthorized();
+        [HttpPost("{id}/read")]
+        public async Task<IActionResult> MarkMessageAsRead(int userId, int id)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
 
-        //    var message = await _repo.GetMessage(id);
+            var message = await _repo.GetMessage(id);
 
-        //    if (message.RecipientId != userId)
-        //        return Unauthorized();
+            if (message.RecipientId != userId)
+                return Unauthorized();
 
-        //    message.IsRead = true;
-        //    message.DateRead = DateTime.Now;
+            message.IsRead = true;
+            message.DateRead = DateTime.Now;
 
-        //    await _repo.SaveAll();
+            await _repo.SaveAll();
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
     }
 }

@@ -5,6 +5,7 @@ import { User } from '../_models/user';
 import { Observable } from 'rxjs';
 import { PaginatedResult } from '../_models/pagination';
 import { map } from 'rxjs/operators';
+import { Message } from '../_models/message';
 
 /*const httpOptions = {
   headers: new HttpHeaders({
@@ -94,7 +95,7 @@ sendLike(id: number, recipientId: number) {
   return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {});
 }
 
-/*getMessages(id: number, page?, itemsPerPage?, messageContainer?) {
+getMessages(id: number, page?, itemsPerPage?, messageContainer?) {
   const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<
     Message[]
   >();
@@ -118,8 +119,7 @@ sendLike(id: number, recipientId: number) {
         paginatedResult.result = response.body;
         if (response.headers.get('Pagination') !== null) {
           paginatedResult.pagination = JSON.parse(
-            response.headers.get('Pagination')
-          );
+            response.headers.get('Pagination'));
         }
 
         return paginatedResult;
@@ -151,6 +151,6 @@ markAsRead(userId: number, messageId: number) {
       {}
     )
     .subscribe();
-}*/
+}
 
 }

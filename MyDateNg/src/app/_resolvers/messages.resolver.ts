@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
 import { Message } from '../_models/message';
 import { AuthService } from '../_services/auth.service';
 
-/*@Injectable()
+@Injectable()
 export class MessagesResolver implements Resolve<Message[]> {
   pageNumber = 1;
   pageSize = 5;
@@ -37,4 +37,4 @@ export class MessagesResolver implements Resolve<Message[]> {
         })
       );
   }
-}*/
+}

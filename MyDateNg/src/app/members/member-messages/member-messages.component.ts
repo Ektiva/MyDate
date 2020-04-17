@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Message } from '../../_models/message';
 import { UserService } from '../../_services/user.service';
 import { AuthService } from '../../_services/auth.service';
@@ -11,9 +11,9 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./member-messages.component.css']
 })
 export class MemberMessagesComponent implements OnInit {
-  /*@Input() recipientId: number;
+  @Input() recipientId: number;
   messages: Message[];
-  newMessage: any = {};*/
+  newMessage: any = {};
 
   
   constructor(
@@ -22,17 +22,13 @@ export class MemberMessagesComponent implements OnInit {
     private alertify: AlertifyService
   ) { }
 
-  ngOnInit() {
-  }
-  
-  /*ngOnInit() {
+ ngOnInit() {
     this.loadMessages();
   }
 
   loadMessages() {
     const currentUserId = +this.authService.decodedToken.nameid;
-    this.userService
-      .getMessageThread(this.authService.decodedToken.nameid, this.recipientId)
+    this.userService.getMessageThread(this.authService.decodedToken.nameid, this.recipientId)
       .pipe(
         tap(messages => {
           for (let i = 0; i < messages.length; i++) {
@@ -62,12 +58,14 @@ export class MemberMessagesComponent implements OnInit {
       .subscribe(
         (message: Message) => {
           this.messages.unshift(message);
-          this.newMessage.content = '';
+          // debugger;
+          this.newMessage = '';
+          // this.newMessage.content = '';
         },
         error => {
           this.alertify.error(error);
         }
       );
-  }*/
+  }
 
 }

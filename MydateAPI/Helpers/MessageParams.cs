@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace MydateAPI.Helpers
         }
 
         public int UserId { get; set; }
+        [FromQuery(Name = "messageContainer")]
         public string MessageContainer { get; set; } = "Unread";
     }
 }

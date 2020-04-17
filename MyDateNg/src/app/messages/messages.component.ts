@@ -12,9 +12,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./messages.component.css']
 })
 export class MessagesComponent implements OnInit {
-  /*messages: Message[];
+  messages: Message[];
   pagination: Pagination;
-  messageContainer = 'Unread';*/
+  messageContainer = 'Unread';
 
   constructor(
     private userService: UserService,
@@ -23,10 +23,8 @@ export class MessagesComponent implements OnInit {
     private alertify: AlertifyService
   ) {}
 
-  ngOnInit() {
-  }
 
-  /*ngOnInit() {
+  ngOnInit() {
     this.route.data.subscribe(data => {
       this.messages = data['messages'].result;
       this.pagination = data['messages'].pagination;
@@ -60,10 +58,9 @@ export class MessagesComponent implements OnInit {
           .deleteMessage(id, this.authService.decodedToken.nameid)
           .subscribe(
             () => {
+              // splice is a javascript method
               this.messages.splice(
-                this.messages.findIndex(m => m.id === id),
-                1
-              );
+                this.messages.findIndex(m => m.id === id), 1);
               this.alertify.success('Message has been deleted');
             },
             error => {
@@ -77,6 +74,6 @@ export class MessagesComponent implements OnInit {
   pageChanged(event: any): void {
     this.pagination.currentPage = event.page;
     this.loadMessages();
-  }*/
+  }
 
 }
