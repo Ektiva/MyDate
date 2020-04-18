@@ -36,10 +36,27 @@ namespace MydateAPI
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        //public void ConfigureDevelopmentServices(IServiceCollection services)
+        //{
+        //    services.AddDbContext<DataContext>(x => x.UseSqlite
+        //    (Configuration.GetConnectionString("DataContext")));
+
+        //    //ConfigureServices(services);
+        //}
+
+        //public void ConfigureProductionServices(IServiceCollection services)
+        //{
+        //    services.AddDbContext<DataContext>(x => x.UseSqlServer
+        //    (Configuration.GetConnectionString("DataContext")));
+
+        //    //ConfigureServices(services);
+        //}
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(x => x.UseSqlite
-            (Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DataContext>(x => {
+                x.UseLazyLoadingProxies();
+                x.UseSqlServer(Configuration.GetConnectionString("DataContext"));
+            });
 
             services.AddControllers().AddNewtonsoftJson(opt =>
                 {
@@ -98,23 +115,28 @@ namespace MydateAPI
             }
             //app.UseHttpsRedirection();
 
-            app.UseCors(X => X.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
+            
+
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             //AllowCredentials allow browser to send cookies. But our authentication isn't using cookies!
             //app.UseCors(x => x.WithOrigins("http://localhost:4200")
             //    .AllowAnyMethod().AllowAnyHeader().AllowCredentials());
-
+            
             //app.UseCors("DefaultPolicy");
+            app.UseCors(X => X.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-            app.UseAuthentication();
-            app.UseRouting();
-
-            app.UseAuthorization();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapFallbackToController("index", "Fallback");
             });
         }
     }

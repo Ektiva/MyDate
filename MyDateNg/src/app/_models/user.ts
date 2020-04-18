@@ -7,7 +7,7 @@ export interface User {
     age: number;
     gender: string;
     created: Date;
-    lastActive: Date;
+    lastActive: any; // So it can accept either date or string
     photoUrl: string;
     city: string;
     country: string;

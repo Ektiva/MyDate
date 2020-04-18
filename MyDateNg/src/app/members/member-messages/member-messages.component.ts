@@ -59,8 +59,8 @@ export class MemberMessagesComponent implements OnInit {
         (message: Message) => {
           this.messages.unshift(message);
           // debugger;
-          this.newMessage = '';
-          // this.newMessage.content = '';
+          // this.newMessage = '';
+          this.newMessage.content = '';
         },
         error => {
           this.alertify.error(error);

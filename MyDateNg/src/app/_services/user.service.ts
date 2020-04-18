@@ -18,7 +18,6 @@ import { Message } from '../_models/message';
 })
 export class UserService {
   baseUrl = environment.apiUrl;
-  //baseUrl =  'https://localhost:44382/api/';
 
 constructor(private http: HttpClient) { }
 

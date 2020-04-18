@@ -11,7 +11,6 @@ import { User } from '../_models/user';
 })
 export class AuthService {
   baseUrl = environment.apiUrl + 'auth/';
-  // baseUrl =  'https://localhost:44382/api/auth/';
   jwtHelper = new JwtHelperService();
   decodedToken: any;
   currentUser: User;

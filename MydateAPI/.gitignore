@@ -17,7 +17,8 @@
 bin
 obj
 *.db
-appsettings.json
+wwwroot
+
 
 # Build results
 [Dd]ebug/
