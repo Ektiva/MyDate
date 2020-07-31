@@ -46,6 +46,26 @@ namespace MydateAPI.Helpers
                     .MapFrom(u => u.Sender.Photos.FirstOrDefault(p => p.IsMain).Url))
                 .ForMember(m => m.RecipientPhotoUrl, opt => opt
                     .MapFrom(u => u.Recipient.Photos.FirstOrDefault(p => p.IsMain).Url));
+
+            CreateMap<User, UserForContactDto>()
+               .ForMember(dest => dest.Name, opt =>
+               {
+                   opt.MapFrom(src => src.Username);
+               })
+               .ForMember(dest => dest.Status, opt =>
+               {
+                   opt.MapFrom(src => src.Status.ToLower());
+               });
+            CreateMap<Message, ChatToReturnDto>()
+                .ForMember(m => m.Who, opt => opt
+                    .MapFrom(u => u.SenderId))
+                .ForMember(m => m.Message, opt => opt
+                    .MapFrom(u => u.Content))
+                .ForMember(m => m.Time, opt => opt
+                    .MapFrom(u => u.MessageSent))
+                .ForMember(m => m.Whose, opt => opt
+                    .MapFrom(u => u.RecipientId));
+            CreateMap<UserForReturnDto, User>();
         }
     }
 }

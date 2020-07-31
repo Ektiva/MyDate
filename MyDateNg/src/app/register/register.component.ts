@@ -61,8 +61,8 @@ export class RegisterComponent implements OnInit {
           '',
           [
             Validators.required,
-            Validators.minLength(4),
-            Validators.maxLength(8)
+            Validators.minLength(7),
+            Validators.maxLength(11)
           ]
         ],
         confirmPassword: ['', Validators.required]
@@ -79,6 +79,7 @@ export class RegisterComponent implements OnInit {
   register() {
     if (this.registerForm.valid) {
       this.user = Object.assign({}, this.registerForm.value);
+      console.log(this.user);
       this.authService.register(this.user).subscribe(
         () => {
           this.alertify.success('Registration succesful');

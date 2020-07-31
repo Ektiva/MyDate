@@ -105,6 +105,11 @@ namespace MydateAPI.Controllers
 
         }
 
+        [HttpGet("emailexists")]
+        public async Task<ActionResult<bool>> CheckEmailExistsAsync([FromQuery] string email)
+        {
+            return await _repo.EmailExists(email);
+        }
 
     }
 }

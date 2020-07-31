@@ -25,6 +25,7 @@ export class MemberDetailComponent implements OnInit {
     //this.loadUsers();
     this.route.data.subscribe(data => {
       this.user = data['user'];
+      console.log(this.user);
     });
 
     this.route.queryParams.subscribe(params => {

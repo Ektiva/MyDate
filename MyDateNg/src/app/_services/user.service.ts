@@ -95,9 +95,7 @@ sendLike(id: number, recipientId: number) {
 }
 
 getMessages(id: number, page?, itemsPerPage?, messageContainer?) {
-  const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<
-    Message[]
-  >();
+  const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
 
   let params = new HttpParams();
 

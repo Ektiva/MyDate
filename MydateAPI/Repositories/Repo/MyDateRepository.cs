@@ -120,7 +120,57 @@ namespace MydateAPI.Repositories.Repo
             return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
 
-        private async Task<IEnumerable<int>> GetUserLikes(int id, bool likers)
+        public async Task<PagedList<User>> GetLikersLikees(UserParams userParams)
+        {
+            var users = _context.Users.OrderByDescending(u => u.LastActive).AsQueryable();
+
+            //var users = _context.Users.OrderByDescending(u => u.LastActive).AsQueryable();
+
+            users = users.Where(u => u.Id != userParams.UserId);
+
+            users = users.Where(u => u.Gender == userParams.Gender);
+
+            //if (userParams.Likers)
+            //{
+            //    var userLikers = await GetUserLikes(userParams.UserId, userParams.Likers);
+            //    users = users.Where(u => userLikers.Contains(u.Id));
+            //}
+
+            //if (userParams.Likees)
+            //{
+            //    var userLikees = await GetUserLikes(userParams.UserId, userParams.Likers);
+            //    users = users.Where(u => userLikees.Contains(u.Id));
+            //}
+
+            var userLikers = await GetUserLikes(userParams.UserId, true);
+            var userLikees = await GetUserLikes(userParams.UserId, false);
+            users = users.Where(u => userLikers.Contains(u.Id) || userLikees.Contains(u.Id));
+
+            if (userParams.MinAge != 18 || userParams.MaxAge != 99)
+            {
+                var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
+                var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
+
+                users = users.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+            }
+
+            if (!string.IsNullOrEmpty(userParams.OrderBy))
+            {
+                switch (userParams.OrderBy)
+                {
+                    case "created":
+                        users = users.OrderByDescending(u => u.Created);
+                        break;
+                    default:
+                        users = users.OrderByDescending(u => u.LastActive);
+                        break;
+                }
+            }
+
+            return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
+        }
+
+        public async Task<IEnumerable<int>> GetUserLikes(int id, bool likers)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
@@ -142,6 +192,11 @@ namespace MydateAPI.Repositories.Repo
         public async Task<Message> GetMessage(int id)
         {
             return await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        public async Task<List<Message>> GetMessages(int userId, int senderId)
+        {
+            return await _context.Messages.Where(m => m.RecipientId == userId && m.SenderId == senderId).ToListAsync();
         }
 
         public async Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams)
@@ -177,10 +232,54 @@ namespace MydateAPI.Repositories.Repo
                     && m.SenderId == recipientId
                     || m.RecipientId == recipientId && m.SenderId == userId
                     && m.SenderDeleted == false)
-                .OrderByDescending(m => m.MessageSent)
+                .OrderBy(m => m.MessageSent)
                 .ToListAsync();
 
             return messages;
+        }
+
+        public async Task<IEnumerable<User>> GetUserss(UserParams userParams)
+        {
+            var users = _context.Users.OrderByDescending(u => u.LastActive).AsQueryable();
+
+            users = users.Where(u => u.Id != userParams.UserId);
+
+            users = users.Where(u => u.Gender == userParams.Gender);
+
+            if (userParams.Likers)
+            {
+                var userLikers = await GetUserLikes(userParams.UserId, userParams.Likers);
+                users = users.Where(u => userLikers.Contains(u.Id));
+            }
+
+            if (userParams.Likees)
+            {
+                var userLikees = await GetUserLikes(userParams.UserId, userParams.Likers);
+                users = users.Where(u => userLikees.Contains(u.Id));
+            }
+
+            if (userParams.MinAge != 18 || userParams.MaxAge != 99)
+            {
+                var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
+                var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
+
+                users = users.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+            }
+
+            if (!string.IsNullOrEmpty(userParams.OrderBy))
+            {
+                switch (userParams.OrderBy)
+                {
+                    case "created":
+                        users = users.OrderByDescending(u => u.Created);
+                        break;
+                    default:
+                        users = users.OrderByDescending(u => u.LastActive);
+                        break;
+                }
+            }
+
+            return users;
         }
 
         //public Task<PagedList<Message>> GetMessagesForUser()

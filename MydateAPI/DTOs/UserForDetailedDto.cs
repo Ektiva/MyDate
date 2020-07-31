@@ -21,6 +21,12 @@ namespace MydateAPI.DTOs
         public string City { get; set; }
         public string Country { get; set; }
         public string PhotoUrl { get; set; }
+        public string Avatar { get; set; }
         public ICollection<PhotosForDetailedDto> Photos { get; set; }
+        public int Size { get; set; }
+        public int Pound { get; set; }
+        public int Feet { get; set; }
+        public string Smoke { get; set; }
+        public string Drink { get; set; }
     }
 }

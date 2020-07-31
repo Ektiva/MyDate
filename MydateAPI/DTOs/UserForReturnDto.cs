@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MydateAPI.DTOs
 {
-    public class UserForListDto
+    public class UserForReturnDto
     {
         public int Id { get; set; }
         public string Username { get; set; }
@@ -20,8 +20,6 @@ namespace MydateAPI.DTOs
         public string Interests { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
-        public string PhotoUrl { get; set; }
-
         public string Lastname { get; set; }
         public string Avatar { get; set; }
         public string Company { get; set; }

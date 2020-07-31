@@ -36,5 +36,29 @@ namespace MydateAPI.DTOs
             Created = DateTime.Now;
             LastActive = DateTime.Now;
         }
+
+        public string Company { get; set; }
+        [Required]
+        public string Jobtitle { get; set; }
+        [Required]
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        [Required]
+        public string Address { get; set; }
+        public string Lastname { get; set; }
+        public string Mood { get; set; }
+        [Required]
+        public int Size { get; set; }
+        [Required]
+        public int Pound { get; set; }
+        [Required]
+        public int Feet { get; set; }
+        [Required]
+        public string Introduction { get; set; }
+        public string LookingFor { get; set; }
+        public string Interests { get; set; }
+        public string Smoke { get; set; }
+        public string Drink { get; set; }
+        public string Avatar { get; set; }
     }
 }

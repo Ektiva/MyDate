@@ -41,6 +41,21 @@ namespace MydateAPI.Controllers
             return Ok(messageFromRepo);
         }
 
+        [HttpGet("chat/{id}", Name = "GetChat")]
+        public async Task<IActionResult> GetChat(int userId, int id)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var messageFromRepo = await _repo.GetMessage(id);
+
+            var messageToReturn = _mapper.Map<ChatToReturnDto>(messageFromRepo);
+            if (messageFromRepo == null)
+                return NotFound();
+
+            return Ok(messageToReturn);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetMessagesForUser(int userId,
            [FromQuery]MessageParams messageParams)
@@ -74,6 +89,23 @@ namespace MydateAPI.Controllers
             return Ok(messageThread);
         }
 
+        //Conversation between 2 users
+        [HttpGet("thread/group/{recipientId}")]
+        public async Task<IActionResult> GetMessageThreadGroup(int userId, int recipientId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var messagesFromRepo = await _repo.GetMessageThread(userId, recipientId);
+
+            var chatThread = new ChatDto();
+            chatThread.Id = ""+userId + ""+recipientId;
+            chatThread.Dialog = _mapper.Map<IEnumerable<ChatToReturnDto>>(messagesFromRepo);
+            //var messageThread = _mapper.Map<IEnumerable<MessageToReturnDto>>(messagesFromRepo);
+
+            return Ok(chatThread);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateMessage(int userId, MessageForCreationDto messageForCreationDto)
         {
@@ -95,8 +127,11 @@ namespace MydateAPI.Controllers
 
             if (await _repo.SaveAll())
             {
-                var messageToReturn = _mapper.Map<MessageToReturnDto>(message);
-                return CreatedAtRoute("GetMessage",
+                //var messageToReturn = _mapper.Map<MessageToReturnDto>(message);
+                //return CreatedAtRoute("GetMessage",
+                //    new { userId, id = message.Id }, messageToReturn);
+                var messageToReturn = _mapper.Map<ChatToReturnDto>(message);
+                return CreatedAtRoute("GetChat",
                     new { userId, id = message.Id }, messageToReturn);
             }
 
@@ -139,6 +174,28 @@ namespace MydateAPI.Controllers
 
             message.IsRead = true;
             message.DateRead = DateTime.Now;
+
+            await _repo.SaveAll();
+
+            return NoContent();
+        }
+
+        [HttpPost("{senderId}/reads")]
+        public async Task<IActionResult> MarkMessagesAsRead(int userId, int senderId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var messages = await _repo.GetMessages(userId, senderId);
+
+            foreach(var message in messages)
+            {
+                if (message.IsRead == false)
+                {
+                    message.IsRead = true;
+                    message.DateRead = DateTime.Now;
+                }
+            }
 
             await _repo.SaveAll();
 

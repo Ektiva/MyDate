@@ -1,0 +1,6 @@
+Azure configuration:
+Database:
+
+Server: aaffix.database.windows.net
+server admin login: appuser
+Password: password20-

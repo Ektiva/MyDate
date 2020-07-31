@@ -1,0 +1,30 @@
+/*
+  "ConnectionStrings": {
+    // For SQLite
+    // "DefaultConnection": "Data Source=MyDate.db",
+    // For MySQL
+    // "DefaultConnection": "Server=localhost; Database=MydateDb; Uid=appuser; Pwd=password",
+    // For SQLServer
+    // "DefaultConnection": "Server=localhost; Database=MydateDb; User Id=appuser; Password=password",
+    "DataContext": "data source =.\\SQLEXPRESS01;initial catalog = MyDateDb;integrated security =True;MultipleActiveResultSets=True;"
+  },*/
+
+appuser
+password20-
+
+
+,
+"Microsoft.Hosting.Lifetime": "Information"
+
+
+            //AllowCredentials allow browser to send cookies. But our authentication isn't using cookies!
+            //app.UseCors(x => x.WithOrigins("http://localhost:4200")
+            //    .AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+            
+            //app.UseCors("DefaultPolicy");
+
+
+  
+  "ConnectionStrings": {
+    "DefaultConnection": "data source =.\\SQLEXPRESS01;initial catalog = MyDateDb;integrated security =True;MultipleActiveResultSets=True;"
+  },

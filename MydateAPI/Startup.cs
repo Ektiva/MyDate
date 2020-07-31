@@ -36,26 +36,31 @@ namespace MydateAPI
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        //public void ConfigureDevelopmentServices(IServiceCollection services)
-        //{
-        //    services.AddDbContext<DataContext>(x => x.UseSqlite
-        //    (Configuration.GetConnectionString("DataContext")));
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            services.AddDbContext<DataContext>(x => {
+                x.UseLazyLoadingProxies();
+                x.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
-        //    //ConfigureServices(services);
-        //}
+            ConfigureServices(services);
+        }
 
-        //public void ConfigureProductionServices(IServiceCollection services)
-        //{
-        //    services.AddDbContext<DataContext>(x => x.UseSqlServer
-        //    (Configuration.GetConnectionString("DataContext")));
+        public void ConfigureProductionServices(IServiceCollection services)
+        {
+            services.AddDbContext<DataContext>(x => {
+                x.UseLazyLoadingProxies();
+                x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
-        //    //ConfigureServices(services);
-        //}
+
+            ConfigureServices(services);
+        }
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(x => {
                 x.UseLazyLoadingProxies();
-                x.UseSqlServer(Configuration.GetConnectionString("DataContext"));
+                x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.AddControllers().AddNewtonsoftJson(opt =>
@@ -99,39 +104,31 @@ namespace MydateAPI
             }
             else
             {
-                app.UseExceptionHandler(builder => {
-                    builder.Run(async context =>
-                    {
-                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                //app.UseExceptionHandler(builder => {
+                //    builder.Run(async context =>
+                //    {
+                //        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-                        var error = context.Features.Get<IExceptionHandlerFeature>();
-                        if (error != null)
-                        {
-                            context.Response.AddApplicationError(error.Error.Message);
-                            await context.Response.WriteAsync(error.Error.Message);
-                        }
-                    });
-                });
+                //        var error = context.Features.Get<IExceptionHandlerFeature>();
+                //        if (error != null)
+                //        {
+                //            context.Response.AddApplicationError(error.Error.Message);
+                //            await context.Response.WriteAsync(error.Error.Message);
+                //        }
+                //    });
+                //});
+                app.UseHsts();
             }
-            //app.UseHttpsRedirection();
-
-
-            
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            //AllowCredentials allow browser to send cookies. But our authentication isn't using cookies!
-            //app.UseCors(x => x.WithOrigins("http://localhost:4200")
-            //    .AllowAnyMethod().AllowAnyHeader().AllowCredentials());
-            
-            //app.UseCors("DefaultPolicy");
+            app.UseDeveloperExceptionPage();
+            // app.UseHttpsRedirection();
             app.UseCors(X => X.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
+            app.UseAuthentication();
+            
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.UseRouting();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

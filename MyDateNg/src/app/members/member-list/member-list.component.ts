@@ -24,9 +24,12 @@ export class MemberListComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    //this.loadUsers();
+    // this.loadUsers();
     this.route.data.subscribe(data => {
+      console.log('Hello');
+      console.log(data);
       this.users = data['users'].result;
+      console.log(data['users'].result);
       this.pagination = data['users'].pagination;
     });
 
@@ -43,6 +46,7 @@ export class MemberListComponent implements OnInit {
   }
 
  resetFilters() {
+   console.log('I am reset');
     this.userParams.gender = this.user.gender === 'female' ? 'male' : 'female';
     this.userParams.minAge = 18;
     this.userParams.maxAge = 99;
